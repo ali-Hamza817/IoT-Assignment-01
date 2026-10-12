@@ -1,0 +1,29 @@
+[project]
+name = "it863-iot-assignment-01"
+version = "1.0.0"
+description = "Simulations for IT863 Internet of Things, Assignment 01 (RTS/CTS and forest-fire wireless sensor network)"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I"]
+ignore = [
+    "B905",  # zip() strict= : all zipped sequences are built with equal length by construction
+    "E741",  # short mathematical variable names (l, I) are not used ambiguously here
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["common", "q1_grid_deployment", "q2_rts_cts", "q3_forest_fire_wsn"]
+
+# the simulation scripts import their shared module `common` from the same folder
+[tool.pyright]
+extraPaths = ["simulations"]
+
+[tool.pyrefly]
+search-path = ["simulations"]
+
+[tool.ty.environment]
+extra-paths = ["simulations"]

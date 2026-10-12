@@ -1,0 +1,129 @@
+% IT863 Internet of Things - Assignment 01
+% Build: LaTeX Workshop recipe "pdflatex x2" (see .vscode/settings.json) or  .\build.ps1
+\documentclass[12pt,a4paper]{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}                 % Times New Roman for text and mathematics
+\usepackage{graphicx}
+\usepackage{animate}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{attachfile}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\input{details}
+
+\hypersetup{hidelinks,pdftitle={IT863 Internet of Things - Assignment 01},pdfauthor={\studentname}}
+\attachfilesetup{color=0 0 0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist{topsep=3pt,itemsep=3pt,leftmargin=1.6em}
+\linespread{1.15}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small IT863 Internet of Things -- Assignment 01}
+\fancyhead[R]{\small\studentname}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ------------------------------------------------------------------ building blocks
+\newcommand{\questiontitle}[1]{\par{\Large\bfseries #1}\par\nopagebreak\vspace{6pt}}
+
+% The question exactly as set in the assignment
+% answers_only.tex defines \hidequestions: the question text is then typeset into a box and discarded
+\ifdefined\hidequestions
+  \newenvironment{question}[1]{\par\setbox0=\vbox\bgroup}{\egroup}
+\else
+  \newenvironment{question}[1]{\par\vspace{4pt}\textbf{Question #1:}\ }{\par}
+\fi
+
+% Answer heading
+% start a new page first when fewer than ~8 lines are left, so a heading never sits alone at a page bottom
+\newcommand{\keepwithnext}{\par\begingroup\dimen0=\pagegoal\advance\dimen0 by -\pagetotal
+  \ifdim\dimen0<6\baselineskip\ifdim\dimen0>0pt\newpage\fi\fi\endgroup}
+\newcommand{\answerhead}[1]{\keepwithnext\vspace{4pt}{\large\bfseries #1}\par\nopagebreak}
+
+\newcounter{simfig}
+\newcommand{\figcaption}[1]{\refstepcounter{simfig}\par\vspace{4pt}
+  {\small\textbf{Figure \thesimfig:} #1}\par}
+
+% Simulation video: {file}{frame rate}{width}{caption}
+\newcommand{\simvideo}[4]{%
+  \begin{center}
+  \animategraphics[controls={play,step,stop,speed},buttonsize=1.1em,loop,autoplay,poster=last,
+    timeline=../media/frames/#1.tln,width=#3]{#2}{../media/frames/#1}{}{}
+  \figcaption{Simulation video: #4}
+  {\small\textattachfile[mimetype=video/mp4,description={Simulation video}]{../media/videos/#1.mp4}%
+    {Video file attached to this PDF: \detokenize{#1}.mp4}%
+  \ifdefempty{\repourl}{}{\ \ |\ \ \href{\repourl/blob/main/media/videos/#1.mp4}{Watch on GitHub}}}
+  \end{center}}
+
+% Figure: [includegraphics options]{file}{caption}
+\newcommand{\simfigure}[3][width=\linewidth]{%
+  \begin{center}
+  \includegraphics[#1]{#2}
+  \figcaption{#3}
+  \end{center}}
+
+\begin{document}
+% ================================================================== cover
+\begin{titlepage}
+\centering
+\vspace*{-1.2cm}
+\includegraphics[width=3.6cm]{nust_logo.png}\par
+\vspace{0.45cm}
+{\Large\bfseries National University of Sciences and Technology (NUST)\par}
+\vspace{0.25cm}
+{\Large Military College of Signals\par}
+
+\vspace{0.8cm}
+\rule{0.75\linewidth}{0.6pt}\par
+\vspace{0.55cm}
+{\LARGE\bfseries Assignment 01\par}
+\vspace{0.3cm}
+{\large Internet of Things (IoT)\par}
+\vspace{0.15cm}
+{\normalsize Course Code: IT863 \quad\textbullet\quad Fall 2026\par}
+\vspace{0.45cm}
+\rule{0.75\linewidth}{0.6pt}\par
+
+\vspace{0.6cm}
+{\large\textbf{Instructor:} \instructor\par}
+
+\vspace{0.8cm}
+\begin{minipage}{0.92\linewidth}% same width as the note below, so both share one left edge
+\large\raggedright
+\begin{tabular}{@{}l@{\hspace{12pt}}l@{}}
+\textbf{Submitted by:} & \studentname\\[5pt]
+\ifdefempty{\regno}{}{\textbf{Registration Number:} & \regno\\[5pt]}
+\textbf{Programme:} & MSSE 32\\[5pt]
+\textbf{Date of Submission:} & 12 October 2026\\
+\end{tabular}
+\end{minipage}
+
+\vspace{1.4cm plus 1fill}
+\begin{minipage}{0.92\linewidth}
+\small\raggedright
+\textbf{Note:} Respected Sir, kindly visit my GitHub repository and the live simulation on Streamlit.\\[3pt]
+\textbf{GitHub:} \href{\repourl}{\repourl}\\[2pt]
+\textbf{Live simulation:} \href{\appurl}{\appurl}
+\end{minipage}
+\end{titlepage}
+
+\input{sections/question1}
+\newpage
+\input{sections/question2}
+\newpage
+\input{sections/question3}
+
+\par\vspace{0.6cm}
+\noindent\begin{minipage}{\linewidth}% kept in one piece
+\textbf{Declaration:} AI tools were used for the simulations and the coding; all of this work has been
+reviewed and edited by me.
+\end{minipage}
+
+\end{document}

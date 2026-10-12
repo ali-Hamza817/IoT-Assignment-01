@@ -1,0 +1,70 @@
+% !TEX root = ../main.tex
+\questiontitle{Question 3: Forest-Fire Monitoring Wireless Sensor Network}
+
+\begin{question}{3}
+A forest-fire monitoring system consists of 1,000 battery-powered sensor nodes randomly deployed over a large
+forest. Each node measures temperature, humidity and smoke concentration. The nodes forward information to a base
+station located at the edge of the forest.
+\end{question}
+
+% ------------------------------------------------------------------ (a)
+\begin{question}{3 (a)}
+Would you select a star/single-hop or multi-hop mesh topology? Justify your choice from the perspective of energy
+consumption and coverage.
+\end{question}
+
+\answerhead{(a) Star/single-hop versus multi-hop mesh topology}
+A multi-hop mesh topology is more suitable for the forest-fire monitoring system.
+
+\begin{itemize}
+\item \textbf{Energy consumption:} Distant sensors can forward data through nearby nodes instead of transmitting
+directly over long distances, potentially reducing transmission energy.
+\item \textbf{Coverage:} Multi-hop communication extends connectivity across a large forest, including locations
+outside the base station's direct communication range.
+\item \textbf{Reliability:} Multiple possible routes can provide alternative paths when individual nodes or links
+fail.
+\end{itemize}
+
+A single-hop star topology would require every sensor to reach the base station directly, potentially consuming
+more energy and limiting coverage.
+
+% ------------------------------------------------------------------ (b)
+\begin{question}{3 (b)}
+Would a flat or hierarchical/clustered WSN (Wireless Sensor Network) architecture be more suitable? Explain your
+choice.
+\end{question}
+
+\answerhead{(b) Flat versus hierarchical/clustered WSN (Wireless Sensor Network) architecture}
+A hierarchical/clustered architecture is more suitable for 1,000 randomly deployed sensors.
+
+The network is divided into clusters, each managed by a cluster head. Ordinary sensor nodes send their readings to
+their cluster head, which aggregates the data and forwards it toward the base station.
+
+Advantages include:
+\begin{itemize}
+\item Reduced redundant transmissions.
+\item Better scalability for a large sensor network.
+\item Lower communication overhead for ordinary nodes.
+\item More efficient coordination and energy management.
+\end{itemize}
+
+Cluster heads should be rotated or selected using residual energy and communication cost to avoid premature
+battery depletion.
+
+\simfigure[width=0.72\linewidth]{../media/figures/q3_architecture.pdf}{Hierarchical/clustered multi-hop WSN (Wireless
+Sensor Network) for the forest: 1,000 sensor nodes over a 2 kilometre $\times$ 2 kilometre forest. Each cluster head
+aggregates its members' readings and forwards them to the base station over a multi-hop route.}
+
+% ------------------------------------------------------------------ (c)
+\begin{question}{3 (c)}
+Explain how data aggregation at intermediate nodes or cluster heads can extend network lifetime.
+\end{question}
+
+\answerhead{(c) How data aggregation extends network lifetime}
+Data aggregation combines readings from multiple sensors into a compact summary before forwarding them. For
+example, a cluster head can calculate average temperature and humidity while preserving maximum temperature and
+smoke readings that may indicate a fire.
+
+Without aggregation, many individual packets must travel toward the base station. With aggregation, fewer packets
+are transmitted over long distances, reducing communication energy and congestion. This helps conserve battery
+power and extends network lifetime while retaining important fire-detection information.

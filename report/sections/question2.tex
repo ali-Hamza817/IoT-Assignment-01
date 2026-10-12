@@ -1,0 +1,109 @@
+% !TEX root = ../main.tex
+\questiontitle{Question 2: IEEE 802.11 RTS/CTS (Request to Send / Clear to Send) Mechanism}
+
+\begin{question}{2}
+Consider a smart agriculture IoT system in which battery-powered soil-moisture sensors A and B
+periodically send their sensed data to a Wi-Fi (Wireless Fidelity)-enabled IoT Access Point (AP).
+Due to the field layout and obstacles, A and B cannot hear each other directly, although both are within
+communication range of the AP (Access Point).
+\end{question}
+
+% ------------------------------------------------------------------ (a)
+\begin{question}{2 (a)}
+Explain why a collision may occur when A and B attempt to send their sensor readings to the AP (Access Point) at
+approximately the same time.
+\end{question}
+
+\answerhead{(a) Why can a collision occur?}
+Sensors A and B cannot hear each other, but both can communicate with the AP (Access Point). If both transmit
+simultaneously, their signals may overlap at the AP (Access Point), causing a packet collision. This is an example of
+the hidden-terminal problem: A and B cannot detect each other's transmissions, even though both share the same
+receiver.
+
+\simvideo{q2_hidden}{5}{0.9\linewidth}{hidden-terminal collision without RTS/CTS (Request to Send / Clear to Send)}
+
+\newpage
+% ------------------------------------------------------------------ (b)
+\begin{question}{2 (b)}
+Using the RTS/CTS (Request to Send / Clear to Send) mechanism of IEEE 802.11, describe the complete communication sequence when sensor A wants to transmit its soil-moisture
+reading to the AP (Access Point).
+\end{question}
+
+\answerhead{(b) Complete RTS/CTS (Request to Send / Clear to Send) communication sequence}
+When sensor A wants to send a soil-moisture reading, the sequence is:
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.6em,itemsep=5pt]
+\item \textbf{Channel check}\\
+Sensor A senses the wireless channel and waits until it is free.
+\item \textbf{RTS (Request to Send)}\\
+A sends an RTS (Request to Send) frame to the AP (Access Point), requesting permission to transmit and indicating
+the expected reservation duration.
+\item \textbf{CTS (Clear to Send)}\\
+After receiving the RTS (Request to Send), the AP (Access Point) responds with a CTS (Clear to Send) frame, granting
+permission and announcing the remaining reserved transmission duration.
+\item \textbf{DATA transmission}\\
+A sends its soil-moisture data to the AP (Access Point).
+\item \textbf{ACK (Acknowledgement)}\\
+The AP (Access Point) sends an ACK (Acknowledgement) after successfully receiving the data frame.
+\end{enumerate}
+
+The basic exchange is:
+
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={draw=black,line width=0.8pt,minimum width=2.75cm,minimum height=1.25cm,align=center,
+              font=\bfseries\large},
+  arr/.style={-{Stealth[length=3mm]},line width=1pt}]
+\node[box] (rts) {RTS\\[-1pt]{\scriptsize\mdseries (Request to Send)}};
+\node[box,right=0.9cm of rts] (cts) {CTS\\[-1pt]{\scriptsize\mdseries (Clear to Send)}};
+\node[box,right=0.9cm of cts] (data) {DATA\\[-1pt]{\scriptsize\mdseries (soil reading)}};
+\node[box,right=0.9cm of data] (ack) {ACK\\[-1pt]{\scriptsize\mdseries (Acknowledgement)}};
+\draw[arr] (rts) -- (cts);
+\draw[arr] (cts) -- (data);
+\draw[arr] (data) -- (ack);
+\tikzset{flowcap/.style={font=\scriptsize,text width=2.9cm,align=center}}
+\node[flowcap,below=2pt of rts] {sensor A $\rightarrow$\\AP (Access Point)};
+\node[flowcap,below=2pt of cts] {AP (Access Point) $\rightarrow$\\sensor A\\(B also hears it)};
+\node[flowcap,below=2pt of data] {sensor A $\rightarrow$\\AP (Access Point)};
+\node[flowcap,below=2pt of ack] {AP (Access Point) $\rightarrow$\\sensor A};
+\end{tikzpicture}
+\end{center}
+
+Short interframe spaces (SIFS) separate the CTS (Clear to Send), DATA, and ACK (Acknowledgement) exchanges as
+specified by IEEE 802.11.
+
+\simvideo{q2_rtscts}{5}{0.9\linewidth}{complete RTS (Request to Send) / CTS (Clear to Send) / DATA / ACK (Acknowledgement) exchange}
+
+
+\newpage
+% ------------------------------------------------------------------ (c)
+\begin{question}{2 (c)}
+Explain how the CTS (Clear to Send) message received by sensor B helps prevent B from transmitting while A is
+communicating with the AP (Access Point).
+\end{question}
+
+\answerhead{(c) How does CTS (Clear to Send) prevent sensor B from transmitting?}
+Sensor B receives the AP's (Access Point's) CTS (Clear to Send) frame even though it cannot hear sensor A. The CTS
+(Clear to Send) contains a duration field that informs B how long the medium is reserved. B updates its Network
+Allocation Vector (NAV) and defers transmission during the reserved period.
+
+Consequently, B avoids transmitting while A communicates with the AP (Access Point), reducing the likelihood of a
+collision.
+
+\simfigure[width=0.86\linewidth,page=41]{../media/frames/q2_rtscts.pdf}{frame from the video above: B's NAV (Network Allocation Vector) keeps B silent while A sends DATA}
+
+\newpage
+% ------------------------------------------------------------------ (d)
+\begin{question}{2 (d)}
+From an IoT perspective, explain one benefit and one drawback of using RTS/CTS (Request to Send
+/ Clear to Send) for battery-powered sensor nodes.
+\end{question}
+
+\answerhead{(d) One benefit and one drawback for battery-powered IoT nodes}
+\textbf{Benefit:} RTS/CTS (Request to Send / Clear to Send) reduces hidden-terminal collisions, avoiding wasted
+energy from unsuccessful data transmissions and retransmissions.
+
+\textbf{Drawback:} RTS (Request to Send) and CTS (Clear to Send) add control-frame overhead, extra channel access
+time, and additional energy consumption. For small, frequent sensor packets, this overhead may outweigh the
+benefits.
+

@@ -1,0 +1,129 @@
+% !TEX root = ../main.tex
+\questiontitle{Question 1: IoT Sensing Network over 1 km $\times$ 1 km}
+
+\begin{question}{1}
+Consider an IoT sensing network to be deployed over a 1 km $\times$ 1 km (1000 m $\times$ 1000 m)
+square area. A single Internet-connected Access Point (AP) is located at the top-right corner of the sensing area.
+
+Assumptions:
+\begin{enumerate}[label=\arabic*.]
+\item Each IoT sensor node has a maximum wireless communication range of 100 m. Two IoT nodes can directly communicate if their Euclidean separation is $\leq$ 100 m.
+\item The AP (Access Point) has a wireless communication range of 200 m.
+\item Each IoT node generates one sensor-data packet every minute.
+\item IoT nodes that cannot directly communicate with the AP (Access Point) must forward their
+data through other IoT nodes using multi-hop communication.
+\item Assume ideal wireless conditions: no packet loss, interference, retransmissions, or physical obstacles.
+\item The objective is to achieve complete network connectivity to the AP (Access Point) while using as few IoT nodes as reasonably possible.
+\item You are not given a predefined grid spacing or node coordinates. You must determine and justify an appropriate
+placement.
+\end{enumerate}
+\end{question}
+
+% ------------------------------------------------------------------ (a)
+\begin{question}{1 (a)}
+Design a suitable placement of IoT nodes over the 1 km $\times$ 1 km (1000 m $\times$ 1000 m)
+area. Determine an appropriate node spacing and the total number of nodes required. Draw the proposed placement,
+clearly showing the AP (Access Point) and the IoT nodes.
+\end{question}
+
+\answerhead{(a) Placement, spacing and number of nodes}
+\begin{itemize}
+\item Square grid with node spacing \textbf{d = 100 m}.
+\item First node N1 at \textbf{(50, 50)}.
+\item This gives 10 $\times$ 10 = 100 grid positions. The last top-right position \textbf{(950, 950)} is the
+\textbf{AP (Access Point)}.
+\item Total IoT nodes required = \textbf{99} (N1 to N99, numbered row by row from the
+bottom-left).
+\end{itemize}
+
+\simfigure[width=0.86\linewidth]{../media/figures/q1_layout.pdf}{Proposed placement: 99 IoT
+nodes at 100 m spacing and the AP (Access Point) at (950, 950). Grey nodes are within the 200 m range of the AP
+(Access Point).}
+
+% ------------------------------------------------------------------ (b)
+\begin{question}{1 (b)}
+Justify your selected node spacing and placement. Demonstrate that every IoT node can ultimately
+reach the AP (Access Point), either directly or through multi-hop communication, while maintaining the $\leq$ 100 m
+communication-distance constraint between directly communicating IoT nodes.
+\end{question}
+
+\answerhead{(b) Justification and connectivity}
+\begin{itemize}
+\item \textbf{Spacing:} neighbouring nodes (left, right, up, down) are exactly 100 m apart, which equals the node
+range, so every neighbour link satisfies the $\leq$ 100 m constraint.
+\item \textbf{Fewest nodes:} any spacing larger than 100 m breaks the links; any smaller spacing adds nodes that are
+not needed. 100 m is therefore the largest valid spacing and needs the fewest nodes.
+\item \textbf{Coverage:} the 50 m offset from the edges places each node at the centre of its own 100 m $\times$ 100
+m cell, so no point of the area is more than 70.7 m from a node.
+\item \textbf{Every node reaches the AP (Access Point):} from any node, the neighbour 100 m to its right or 100 m
+above it is one hop closer to the AP (Access Point). Repeating this step always reaches one of the five nodes inside
+the 200 m range of the AP (Access Point), which then sends directly to the AP (Access Point). The farthest node, N1,
+needs 17 transmissions; all 99 nodes are connected.
+\end{itemize}
+
+% ------------------------------------------------------------------ (c)
+\begin{question}{1 (c)}
+Identify the IoT nodes that can communicate directly with the AP (Access Point). Select a node
+that cannot directly reach the AP (Access Point) and determine a shortest multi-hop path from that node to the AP
+(Access Point). State the number of IoT-to-IoT hops and total wireless
+transmissions, including the final AP (Access Point) transmission.
+\end{question}
+
+\answerhead{(c) Direct nodes and shortest path}
+\textbf{Nodes in direct range of the AP (Access Point) at (950, 950), distance $\leq$ 200 m:}
+\begin{itemize}
+\item N99 at (850, 950): 100 m
+\item N90 at (950, 850): 100 m
+\item N89 at (850, 850): 141.4 m
+\item N98 at (750, 950): 200 m
+\item N80 at (950, 750): 200 m
+\end{itemize}
+
+\textbf{Selected node:} N1 at (50, 50).
+
+\textbf{Shortest path:} N1 $\rightarrow$ N11 $\rightarrow$ N21 $\rightarrow$ N31 $\rightarrow$ N41 $\rightarrow$ N51
+$\rightarrow$ N61 $\rightarrow$ N71 $\rightarrow$ N81 $\rightarrow$ N82 $\rightarrow$ N83 $\rightarrow$ N84
+$\rightarrow$ N85 $\rightarrow$ N86 $\rightarrow$ N87 $\rightarrow$ N88 $\rightarrow$ N89 $\rightarrow$ AP (Access
+Point)
+
+\begin{itemize}
+\item IoT-to-IoT hops = \textbf{16}
+\item Total wireless transmissions = 16 + 1 (final hop N89 $\rightarrow$ AP (Access Point)) = \textbf{17}
+\end{itemize}
+
+\simfigure[width=0.86\linewidth]{../media/figures/q1_path.pdf}{Shortest multi-hop path from N1 to the AP (Access
+Point): 16 IoT-to-IoT hops and 17 transmissions.}
+
+% ------------------------------------------------------------------ (d)
+\begin{question}{1 (d)}
+Each IoT node generates one packet per minute. Explain how traffic accumulates toward the AP
+(Access Point). Identify the nodes or region expected to experience the highest forwarding load and explain the
+energy-hotspot/energy-hole problem.
+\end{question}
+
+\answerhead{(d) Traffic accumulation and the energy hole}
+Each node generates one packet per minute. Nodes closer to the AP (Access Point) forward their own packets as well as packets
+received from nodes farther away.
+
+The forwarding load increases toward the AP (Access Point) because traffic from multiple branches converges near the top-right
+corner. Nodes adjacent to the AP (Access Point) therefore carry a disproportionately high forwarding burden.
+
+This creates the energy-hole problem: heavily loaded relay nodes deplete their batteries faster than nodes farther
+away. When these relays fail, distant nodes may lose their routes to the AP (Access Point), reducing network coverage and
+lifetime.
+
+\simfigure[width=0.86\linewidth]{../media/figures/q1_load.pdf}{Forwarding load of every node (node number on top, packets transmitted per minute below). Arrows show the traffic converging on the AP (Access Point).}
+
+% ------------------------------------------------------------------ (e)
+\begin{question}{1 (e)}
+Suggest one technique that could reduce the energy burden on heavily loaded nodes and explain how it can improve the
+network lifetime.
+\end{question}
+
+\answerhead{(e) Technique: unequal clustering}
+Unequal clustering can reduce the energy burden on nodes near the AP (Access Point). Smaller clusters can be formed near the AP (Access Point),
+reducing the number of local packets that heavily loaded nodes must process and forward. Cluster heads can aggregate
+readings before forwarding them.
+
+This reduces redundant transmissions and balances energy consumption, potentially extending the network's
+operational lifetime.
